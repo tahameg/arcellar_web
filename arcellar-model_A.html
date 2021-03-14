@@ -136,6 +136,9 @@ function initialize()
 					mesh0 = group.children[0];
 					mesh0.material.side = THREE.DoubleSide;
 					group.scale.set(0.5,0.5,0.5);
+					group.rotation.x = -Math.PI/2;
+					group.position.y = 0.55;
+					group.position.z = 0.05;
 					markerRoot1.add(group);
 				}, onProgress, onError );
 		});
