@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-	<title>Hello, world!</title>
+	<title>ARCellar Demo</title>
 	<!-- include three.js library -->
 	<script src='js/three.js'></script>
-	<script src='js/FBXLoader.js'></script>
+	<script src='js/OBJLoader.js'></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -124,31 +124,17 @@ function initialize()
 	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
-	new THREE.FBXLoader().load('models/deneme.fbx', function(group) {
+	var material = new THREE.MeshStandartMaterial( {color: 0xcc2936} );	
+	new THREE.OBJLoader().load('models/deneme.obj', function(group) {
 		mesh0 = group.children[0];
 		mesh0.material.side = THREE.DoubleSide;
+		mesh0.material = material;
 		mesh0.position.y = 0.25;
-		mesh0.scale.set(0.25,0.25,0.25);
+		mesh0.scale.set(0.025,0.025,0.025);
 		markerRoot1.add(mesh0);
-	}, onProgress, onError);
+	}, onProgress, onError); 
 
-	new THREE.OBJLoader
-		.setPath( 'models/' )
-		.load( 'fish-2.mtl', function ( materials ) {
-			materials.preload();
-			new THREE.OBJLoader()
-				.setMaterials( materials )
-				.setPath( 'models/' )
-				.load( 'fish-2.obj', function ( group ) {
-					mesh0 = group.children[0];
-					mesh0.material.side = THREE.DoubleSide;
-					mesh0.position.y = 0.8;
-					mesh0.scale.set(0.25,0.25,0.25);
-					markerRoot1.add(mesh0);
-				}, onProgress, onError );
-		});
 }
-
 
 function update()
 {
