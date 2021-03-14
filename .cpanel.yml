@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/arcellaradmin/development
+    - /bin/cp * $DEPLOYPATH
