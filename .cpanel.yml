@@ -2,4 +2,4 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/arcellaradmin/public_html/development
-    - /bin/cp * $DEPLOYPATH
+    - /bin/cp -a * $DEPLOYPATH
