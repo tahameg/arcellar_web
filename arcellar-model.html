@@ -5,6 +5,7 @@
 	<!-- include three.js library -->
 	<script src='js/three.js'></script>
 	<script src='js/OBJLoader.js'></script>
+	<script src='js/MTLLoader.js'></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -110,30 +111,34 @@ function initialize()
 	markerRoot1 = new THREE.Group();
 	scene.add(markerRoot1);
 	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-		type: 'pattern', patternUrl: "data/hiro.patt",
+		type: 'pattern', patternUrl: "data/arcellar.patt",
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
 	let loader = new THREE.TextureLoader();
 	// let texture = loader.load( 'images/earth.jpg', render );
-	let material1 = new THREE.MeshBasicMaterial( { color: 0x0000ff, opacity: 0.5 } );
+	let material1 = new THREE.MeshBasicMaterial( { color: 0x696969, opacity: 0.5 } );
 	mesh1 = new THREE.Mesh( geometry1, material1 );
 	mesh1.rotation.x = -Math.PI/2;
 	markerRoot1.add( mesh1 );
 	
 	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
 	function onError(xhr) { console.log( 'An error happened' ); }
-	
-	var material = new THREE.MeshStandartMaterial( {color: 0xcc2936} );	
-	new THREE.OBJLoader().load('models/deneme.obj', function(group) {
-		mesh0 = group.children[0];
-		mesh0.material.side = THREE.DoubleSide;
-		mesh0.material = material;
-		mesh0.position.y = 0.25;
-		mesh0.scale.set(0.025,0.025,0.025);
-		markerRoot1.add(mesh0);
-	}, onProgress, onError); 
 
+	new THREE.MTLLoader()
+		.setPath( 'models/' )
+		.load( 'arcellar_mt.mtl', function ( materials ) {
+			materials.preload();
+			new THREE.OBJLoader()
+				.setMaterials( materials )
+				.setPath( 'models/' )
+				.load( 'arcellar_logo.obj', function ( group ) {
+					mesh0 = group.children[0];
+					mesh0.material.side = THREE.DoubleSide;
+					group.scale.set(0.5,0.5,0.5);
+					markerRoot1.add(group);
+				}, onProgress, onError );
+		});
 }
 
 function update()
